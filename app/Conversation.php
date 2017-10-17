@@ -48,7 +48,8 @@ class Conversation extends Model
      */
     public function replies()
     {
-        return $this->hasMany(Conversation::class, 'parent_id');
+        return $this->hasMany(Conversation::class, 'parent_id')
+            ->latestFirst();
     }
 
     /**

@@ -22,6 +22,23 @@ const actions = {
 			commit('setLoadingConversation', false)
 			window.history.pushState(null, null, '/conversations/' + id)
 		});
+	},
+	storeConversationReply({dispatch, commit}, {id, body}) {
+		return api.storeConversationReply(id, {
+			body: body
+		}).then((response) => {
+			commit('prependToConversation', response.data.data)
+			commit('prependToConversations', response.data.data.parent.data)
+		})
+	},
+	createConversation({dispatch, commit}, {body, recipientIds}) {
+		return api.storeConversation({
+			body: body,
+			receipientIds: recipientIds
+		}).then((response) => {
+			dispatch('getConversation', response.data.data.id)
+			commit('prependToConversations', response.data.data)
+		})
 	}
 }
 
@@ -31,7 +48,10 @@ const mutations = {
 	},
 	setLoadingConversation(state, status) {
 		state.loadingConversation = status
-	}
+	},
+	prependToConversation(state, reply) {
+		state.conversation.replies.data.unshift(reply)
+	},
 }
 
 export default {

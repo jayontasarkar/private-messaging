@@ -1,6 +1,7 @@
 <template>
     <div class="row">
         <div class="col-md-5">
+            <conversation-form></conversation-form>
             <conversations></conversations>
         </div>
         <div class="col-md-7">
